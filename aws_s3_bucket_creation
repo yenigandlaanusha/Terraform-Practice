@@ -1,0 +1,15 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_s3_bucket" "examples3" {
+  bucket = "anusha-s3-bucket-test"
+}
+
+resource "aws_s3_bucket_versioning" "versiontest" {
+  bucket = aws_s3_bucket.examples3.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+  
+}
