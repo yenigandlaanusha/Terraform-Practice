@@ -1,0 +1,31 @@
+#create an s3 bucket , create a user with read and write access to the bucket
+
+resource "aws_s3_bucket" "example-s3" {
+  bucket = "example-s3-bucket-with-policy-foruser-anusha"
+}
+
+resource "aws_iam_user" "example-iamuser" {
+  name = "Anusha-user"
+}
+resource "aws_iam_user_policy" "example-iamuserpolicy" {
+  name = "Anusha-user-policy"
+  user = aws_iam_user.example-iamuser.name
+  policy = jsonencode({
+    Version= "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListBucket",
+        ],
+        Effect = "Allow",
+        Resource = [
+          aws_s3_bucket.example-s3.arn,
+          "${aws_s3_bucket.example-s3.arn}/*"
+        ],
+      },
+    ],
+
+  })
+}
